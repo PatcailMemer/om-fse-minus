@@ -1,0 +1,2 @@
+Nerfs:
+- The Base is always 100
