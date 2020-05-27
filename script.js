@@ -16,9 +16,9 @@ let factorCostExp=[2,2,2,3,3,6,30]
 const bupUpgradeCosts=[1,1,1,NaN,14,2,1,NaN,151,1,2,NaN,32,20,50,NaN]
 const pupUpgradeCosts=
   [1,50,NaN,NaN,NaN,
-   1,3, NaN,NaN,NaN,
-   1,6, NaN,NaN,NaN,
-   1,3, 9,  500, NaN]
+   1,3, 1000,1000,1000,
+   1,6, 1000,NaN,NaN,
+   1,3, 9,  500000, NaN]
 const dupUpgradeCosts=[1,1,1,3,6,6,200,100000,10]
 const dupCostScale=[2,1.1,1.1,Infinity,Infinity,Infinity,Infinity,Infinity,10]
 const slugMile=[10**10,20,15,12,10,8,6,5,4,3,2,1,-1]
@@ -119,7 +119,7 @@ function loop(ms) {
   {
     game.base = Math.min(game.base, 80)
   }
-
+  
   let extraAuto = 0;
   if (game.upgrades.includes(7)) { extraAuto++; }
   if (game.pupgrades.includes(17)) { extraAuto++; }
@@ -195,6 +195,9 @@ function loop(ms) {
     maxall()
   }
   
+  if (totalSuccAuto.mul(succAutoMult).mul(totalMult).gte("ee15")||totalSuccAuto.mul(succAutoMult).mul(totalMult).gte("ee15")) {
+    game.ord=game.ord.add(totalSuccAuto.mul(succAutoMult).mul(totalMult))
+  } else {
   let succMagicNum = EN.div(1000, totalSuccAuto.mul(succAutoMult).mul(totalMult)) // like, seriously, how does this work
   let smnRecip = EN.div(totalSuccAuto.mul(succAutoMult).mul(totalMult), 1000)
 
@@ -222,6 +225,7 @@ function loop(ms) {
         game.autoLoop.succ = game.autoLoop.succ % succMagicNum.toNumber()
       }
     }
+  }
   }
   if (isNaN(game.autoLoop.succ)) game.autoLoop.succ = 0;
   if (isNaN(game.autoLoop.lim)) game.autoLoop.lim = 0;
@@ -463,6 +467,11 @@ function getExtraLimAuto() {
 }
 
 function maxDup() {
+  dup(4)
+  dup(5)
+  dup(6)
+  dup(7)
+  dup(8)
   let x=EN.affordGeometricSeries(game.DP,1,2,game.diagonalUp[0])
   game.DP=game.DP.minus(EN.sumGeometricSeries(x,1,2,game.diagonalUp[0]))
   game.diagonalUp[0]=game.diagonalUp[0].add(x)
@@ -480,13 +489,13 @@ function dup(x) {
 }
 
 function getOPBase() {
-  let diag=game.diagonalUp[0].times(game.diagonalUp[6].add(1)).pow(1+(game.pupgrades.includes(12)?0.1:0))
+  let diag=game.diagonalUp[0].times(game.diagonalUp[6].add(1)).times(game.pupgrades.includes(13)?omegaFactorMult:1).pow(1+(game.pupgrades.includes(12)?0.1:0))
   if (diag.lte(8)) return game.diagonalUp[0].times(50).add(100)
   return EN(500).times(EN(1.1).pow(diag.minus(8))).floor()
 }
 
 function getDPgain() {
-  return game.ord.div(game.base**2).sqrt().times(Math.min(1,(game.diagonalTime/10)**2)).times(EN(2).pow(game.diagonalUp[8])).floor()
+  return game.ord.div(game.base**2).sqrt().times(Math.min(1,(game.diagonalTime/10)**2)).times(EN(2).pow(game.diagonalUp[8].isNaN()?0:game.diagonalUp[8])).floor()
 }
 
 function calcDynamic() {
@@ -626,7 +635,7 @@ function factorCollapse()
     {
       if (game.pupgrades.includes(n))
       {
-        game.products = game.products.add(pupUpgradeCosts[n-1])
+        game.products = game.products.add((isNaN(pupUpgradeCosts[n-1])?0:pupUpgradeCosts[n-1]))
       }
     }
     
@@ -938,6 +947,18 @@ function pathAllows(pupgrade)
   {
     return (game.pupgrades.includes(2) + game.pupgrades.includes(7) + game.pupgrades.includes(12)) < 2
   }
+  else if (pupgrade % 5 == 3)
+  {
+    return (game.pupgrades.includes(3) + game.pupgrades.includes(8) + game.pupgrades.includes(13)) < 2
+  }
+  else if (pupgrade % 5 == 4)
+  {
+    return (game.pupgrades.includes(4) + game.pupgrades.includes(9) + game.pupgrades.includes(14)) < 1
+  }
+  else if (pupgrade % 5 == 0)
+  {
+    return (game.pupgrades.includes(5) + game.pupgrades.includes(10) + game.pupgrades.includes(15)) < 1
+  }
 }
 
 function pup(x,spectate=0) {
@@ -1013,7 +1034,19 @@ function updateFactors() {
 }
 
 function updateOmegaFactors() {
-  if (game.pupgrades.includes(7))
+  if (game.pupgrades.includes(10))
+  {
+    game.omegaFactorCount = 5;
+  }
+  else if (game.pupgrades.includes(9))
+  {
+    game.omegaFactorCount = 4;
+  }
+  else if (game.pupgrades.includes(8))
+  {
+    game.omegaFactorCount = 3;
+  }
+  else if (game.pupgrades.includes(7))
   {
     game.omegaFactorCount = 2;
   }
@@ -1034,12 +1067,12 @@ function updateOmegaFactors() {
   if (game.omegaFactorCount > 0) {
     let factorListHTML=""
     for(let factorListCounter=0;factorListCounter<game.omegaFactorCount;factorListCounter++){
-      factorListHTML += "<li>Omega Factor " + (factorListCounter+1) + " x" + beautifyEN(1 + 0.03 * game.omegaFactors[factorListCounter], 2) + " <button onclick=\"buyOmegaFactor(" + factorListCounter + ")\" class=\"productButton\">Increase Omega Factor " + (factorListCounter+1) + " for " + beautifyEN(EN.fromHyperE("E" + (factorListCounter + 1) + "#" + (game.omegaFactors[factorListCounter] + 1))) + " OP</button></li>"
+      factorListHTML += "<li>Omega Factor " + (factorListCounter+1) + " x" + beautifyEN((1 + 0.03 * game.omegaFactors[factorListCounter]), 2) + " <button onclick=\"buyOmegaFactor(" + factorListCounter + ")\" class=\"productButton\">Increase Omega Factor " + (factorListCounter+1) + " for " + beautifyEN(EN.fromHyperE("E" + (factorListCounter + (game.pupgrades.includes(10)&&factorListCounter>=1?0.92:1)) + "#" + (game.omegaFactors[factorListCounter] + 1))) + " OP</button></li>"
     }
     document.getElementById("omegaFactorListMain").style.display = "block"
     document.getElementById("noOmegaFactors").style.display = "none"
     document.getElementById("omegaFactorMult").style.display = "block"
-    document.getElementById("omegaFactorListMain").innerHTML=factorListHTML
+    if (document.getElementById("omegaFactorListMain").innerHTML!=factorListHTML) document.getElementById("omegaFactorListMain").innerHTML=factorListHTML
   } else {
     document.getElementById("omegaFactorListMain").style.display = "none"
     document.getElementById("noOmegaFactors").style.display = "block"
@@ -1140,7 +1173,7 @@ function displayOrd(ord,base=3,over=0,trim=0,large=0,multoff=0,colour=0) {
   let dispString = "";
 
   let largeOrd = false;
-
+  if (ord.gte(EN(base).tetrate(10))) {return (colour==1?"<span style='color:red'>ω^^</span>":"ω^^") + displayOrd(ord.slog().floor(),base,over,trim,large,multoff,colour)}
   while (ord.gte(base) && (trim < game.maxOrdLength.less || game.maxOrdLength.less == 0) && !largeOrd)
   {
     let tempvar = ord.add(0.1).logBase(base).floor() // if leading term of ordinal is (ω^c)a, this is c
@@ -1218,7 +1251,7 @@ function beautifyEN(n,f=0) {
     }
     return mantissa + "e" + beautifyEN(exponent)
   } else if (isNaN(x)) {
-    return "NaN";
+    return n.toString()
   } else if (x.eq(Infinity)) {
     return "Infinity";
   } else { // toHyperE doesn't work, so this is as far as I'm going
@@ -1233,11 +1266,13 @@ function calcOrdPoints(ord=game.ord,base=game.base,over=game.over,trim=0) {
 
   if (EN.lt(ord, base)) {
     return EN.add(ord, over)
-  } else {
+  } else if (ord.slog(game.base).lt(game.base)) {
     let powerOfOmega = ord.add(0.1).logBase(base).floor()
     let highestPower = EN.pow(base,powerOfOmega)
     let powerMultiplier = EN.floor(EN.div(ord.add(0.1),highestPower))
     return EN.add(EN.mul(EN.pow(opBase, calcOrdPoints(powerOfOmega,base,0)), powerMultiplier), ord.lt(EN.tetrate(game.base, 3)) ? calcOrdPoints(ord.sub(EN.mul(highestPower,powerMultiplier)),base,over,trim+1) : 0)
+  } else {
+    return opBase.tetr(calcOrdPoints(ord.slog(game.base),base,0,trim))
   }
 }
 
@@ -1438,11 +1473,11 @@ function buyFactor(n) {
 
 function buyOmegaFactor(n)
 {
-  if (game.OP.gte(EN.fromHyperE("E" + (n + 1) + "#" + (game.omegaFactors[n] + 1)))) // yes, hacky solution, i know.
+  if (game.OP.gte(EN.fromHyperE("E" + (n + (game.pupgrades.includes(10)&&n>=1?0.92:1)) + "#" + (game.omegaFactors[n] + 1)))) // yes, hacky solution, i know.
   {
     if (game.OP < EN("e9e15"))
     {
-      game.OP = game.OP.sub(EN.fromHyperE("E" + (n + 1) + "#" + (game.omegaFactors[n] + 1)))
+      game.OP = game.OP.sub(EN.fromHyperE("E" + (n + (game.pupgrades.includes(10)&&n>=1?0.92:1)) + "#" + (game.omegaFactors[n] + 1)))
     }
     game.omegaFactors[n] += 1
   }
