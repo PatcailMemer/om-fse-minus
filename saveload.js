@@ -108,6 +108,7 @@ function loadGame(loadgame) {
 function load() {
   const loadgame = JSON.parse(localStorage.getItem("ordinalMarkupSave"));
   if (loadgame !== null && AF === 0) {
+    if (typeof loadgame.ord!="object") loadgame = JSON.parse(localStorage.getItem(om-fse-save))
     loadGame(loadgame);
   }
 }
@@ -227,7 +228,7 @@ function handleOldVersions(loadgame) {
 
 
 function save() {
-  if (AF === 0) localStorage.setItem("ordinalMarkupSave", JSON.stringify(game));
+  if (AF === 0) localStorage.setItem("om-fse-save", JSON.stringify(game));
 }
 
 function exporty() {
