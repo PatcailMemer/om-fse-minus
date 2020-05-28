@@ -106,9 +106,12 @@ function loadGame(loadgame) {
 }
 
 function load() {
-  const loadgame = JSON.parse(localStorage.getItem("ordinalMarkupSave"));
+  const loadgame = JSON.parse(localStorage.getItem("om-fse-save")); //ordinalMarkupSave
+  if (loadgame == null) {
+    loadgame = JSON.parse(localStorage.getItem("ordinalMarkupSave"))
+    if (typeof loadgame.ord!="object") loadgame=JSON.parse(localStorage.getItem("om-fse-save"))
+  }
   if (loadgame !== null && AF === 0) {
-    if (typeof loadgame.ord!="object") loadgame = JSON.parse(localStorage.getItem("om-fse-save"))
     loadGame(loadgame);
   }
 }
