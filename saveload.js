@@ -108,7 +108,7 @@ function loadGame(loadgame) {
 function load() {
   const loadgame = JSON.parse(localStorage.getItem("ordinalMarkupSave"));
   if (loadgame !== null && AF === 0) {
-    if (typeof loadgame.ord!="object") loadgame = JSON.parse(localStorage.getItem(om-fse-save))
+    if (typeof loadgame.ord!="object") loadgame = JSON.parse(localStorage.getItem("om-fse-save"))
     loadGame(loadgame);
   }
 }
