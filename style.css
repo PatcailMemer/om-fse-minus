@@ -435,3 +435,37 @@ invisible {
   background: #FFFFFF;
   color: #800000;
 }
+
+.challenge {
+  height: 150px;
+  width: 300px;
+  font-size: 15px;
+  border-width: 3px;
+}
+
+.running {
+  background: #FFFFFF;
+  border-radius: 2px;
+  border-color: #000000;
+  color: #000080;
+}
+
+#finishChallenge {
+  height: 100px;
+  width: 200px;
+  font-size: 20px;
+}
+
+.invisible {
+  opacity: 0;
+}
+
+red {
+  color: red;
+}
+
+lime {
+  color: lime;
+}
+
+
