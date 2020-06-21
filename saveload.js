@@ -61,7 +61,11 @@ function reset() {
   diagonalizeUnlock: 0,
   DP: EN(0),
   diagonalTime: 0,
-  diagonalUp: [EN(0),EN(0),EN(0),EN(0),EN(0),EN(0),EN(0),EN(0),EN(0)]
+  diagonalUp: [EN(0),EN(0),EN(0),EN(0),EN(0),EN(0),EN(0),EN(0),EN(0)],
+  prodChal: 0,
+  prodChalComp: [],
+  prodChal8: 0,
+  prodChal8Comp: 0
   }
   document.getElementById("infinityTabButton").style.display="none"
   render()
@@ -106,7 +110,7 @@ function loadGame(loadgame) {
 }
 
 function load() {
-  const loadgame = JSON.parse(localStorage.getItem("om-fse-save")); //ordinalMarkupSave
+  let loadgame = JSON.parse(localStorage.getItem("om-fse-save")); //ordinalMarkupSave
   if (loadgame == null) {
     loadgame = JSON.parse(localStorage.getItem("ordinalMarkupSave"))
     if (typeof loadgame.ord!="object") loadgame=JSON.parse(localStorage.getItem("om-fse-save"))

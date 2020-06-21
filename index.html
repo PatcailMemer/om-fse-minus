@@ -229,6 +229,7 @@
       <button onclick="psubTab(2)" class="productButton">Upgrades</button>
       <button onclick="psubTab(3)" class="productButton">Omega Factors</button>
       <button onclick="psubTab(4)" class="productButton">Autoprestigers</button>
+      <button onclick="psubTab(5)" class="productButton">Product Challenges</button>
       <div id="psubTab1">
         <br>
         Welcome to this part of the game!<br>
@@ -237,7 +238,7 @@
         You can spend these on upgrades, and you will gain more Products the more Ordinal Points you had when you Factor Collapsed.<br>
         However, you cannot spend these products willy-nilly. The upgrades are arranged in horizontal paths, and each upgrade path has 5 tiers.<br>
         <br>
-        You can only buy two out of three Tier 2-3 upgrades from the first three paths, and only one Tier 4-5 upgrade. However, you can still buy all of the Tier 1 upgrades.<br>
+        You can buy all of the Tier 1 upgrades and two of the Tier 2 upgrades. You can only get one of the Tier 4-5 upgrade.<br>
         The Meta Upgrades path does not count a path (i.e. you can get them independently of the path restrictions), and also do not consume products.<br>
       </div>
       <div id="psubTab2">
@@ -247,34 +248,34 @@
           <tr>
             <td>Factor Path</td>
             <td><button class="treeButton plocked" id="pup1" onclick="pup(1)">You start at Factor Shift 7<br><br>1 Product</button></td>
-            <td><button class="treeButton plocked" id="pup2" onclick="pup(2)">Double Factors gained from Factor Shifts<br><br>50 Products</button></td>
-            <td><button class="treeButton plocked" id="pup3" onclick="pup(3)">???<br><br>???</button></td>
-            <td><button class="treeButton plocked" id="pup4" onclick="pup(4)">???<br><br>???</button></td>
-            <td><button class="treeButton plocked" id="pup5" onclick="pup(5)">???<br><br>???</button></td>
+            <td><button class="treeButton plocked" id="pup2" onclick="pup(2)">Double Factors gained from Factor Shifts<br><br>24 Products</button></td>
+            <td><button class="treeButton plocked" id="pup3" onclick="pup(3)">Start at factor shift 50<br><br>5e14 Products</button></td>
+            <td><button class="treeButton plocked" id="pup4" onclick="pup(4)">Products slow down tetrational diagonalizer cost scaling<br>3e15 Products</button></td>
+            <td><button class="treeButton plocked" id="pup5" onclick="pup(5)">Raise product gain to the 1.5<br>2e16 Products</button></td>
           </tr>
           <tr>
             <td>Omega Factor Path</td>
             <td><button class="treeButton plocked" id="pup6" onclick="pup(6)">Unlock the first Omega Factor<br><br>1 Product</button></td>
             <td><button class="treeButton plocked" id="pup7" onclick="pup(7)">Unlock the second Omega Factor<br><br>3 Products</button></td>
-            <td><button class="treeButton plocked" id="pup8" onclick="pup(8)">Unlock the third Omega Factor<br><br>1000 Products</button></td>
+            <td><button class="treeButton plocked" id="pup8" onclick="pup(8)">Unlock the third Omega Factor<br><br>8 Products</button></td>
             <td><button class="treeButton plocked" id="pup9" onclick="pup(9)">Unlock the fourth Omega Factor<br><br>1000 Products</button></td>
-            <td><button class="treeButton plocked" id="pup10" onclick="pup(10)">Unlock the fifth Omega Factor, Omega Factors are slightly cheaper<br>1000 Products</button></td>
+            <td><button class="treeButton plocked" id="pup10" onclick="pup(10)">Unlock the fifth Omega Factor<br><br>2000000 Products</button></td>
           </tr>
           <tr>
             <td>Base Path</td>
             <td><button class="treeButton plocked" id="pup11" onclick="pup(11)">The base is always at most 80<br><br>1 Product</button></td>
-            <td><button class="treeButton plocked" id="pup12" onclick="pup(12)">Diagonalizers are raised to the 1.1<br><br>6 Products</button></td>
-            <td><button class="treeButton plocked" id="pup13" onclick="pup(13)">Omega Factors boost Diagonalizers<br><br>1000 Products</button></td>
-            <td><button class="treeButton plocked" id="pup14" onclick="pup(14)">???<br><br>???</button></td>
-            <td><button class="treeButton plocked" id="pup15" onclick="pup(15)">???<br><br>???</button></td>
+            <td><button class="treeButton plocked" id="pup12" onclick="pup(12)">Diagonalizers are 10% more effective, reduce base by 10%<br>6 Products</button></td>
+            <td><button class="treeButton plocked" id="pup13" onclick="pup(13)">Diagonalizers scale 1.5x as slow before 98304<br>5e10 Products</button></td>
+            <td><button class="treeButton plocked" id="pup14" onclick="pup(14)">Omega Factor 5 raises diagonalizers<br><br>5e11 Products</button></td>
+            <td><button class="treeButton plocked" id="pup15" onclick="pup(15)">Reduce the base by 8<br><br>2e14 Products</button></td>
           </tr>
           <tr>
             <td>Meta Upgrades</td>
             <td><button class="treeButton plocked" id="pup16" onclick="pup(16)"><font>Gain 1% of OP gained on Infinity per second</font><br><br>Need 1 Product</button></td>
-            <td><button class="treeButton plocked" id="pup17" onclick="pup(17)">Gain 1 additional free autoclicker each<br><br>Need 3 Products</button></td>
+            <td><button class="treeButton plocked" id="pup17" onclick="pup(17)">Gain 1 free autoclicker each and 1% of DP gained per second<br>Need 3 Products</button></td>
             <td><button class="treeButton plocked" id="pup18" onclick="pup(18)">Unlock Factor Shift Autobuyer<br><br>Need 9 Products</button></td>
-            <td><button class="treeButton plocked" id="pup19" onclick="pup(19)">Unlock Product Challenges<br><br>Need 500000 Products</button></td>
-            <td><button class="treeButton plocked" id="pup20" onclick="pup(20)">???<br><br>???</button></td>
+            <td><button class="treeButton plocked" id="pup19" onclick="pup(19)">Unlock Product Challenges<br><br>Need 100 Products</button></td>
+            <td><button class="treeButton plocked" id="pup20" onclick="pup(20)">Unlock the next layer<br><br>Need eee6 OP</button></td>
           </tr>
           </tbody></table>
           <p style="text-align: center"><i>You may have to rotate your phone on mobile to see all of the upgrades. The bottom row of upgrades doesn't consume your products.</i></p>
@@ -293,6 +294,36 @@
         <p id="factorShiftAuto">Your Factor Shift Autobuyer is automatically Factor Shifting 1 times per second</p>
         <br>
         <button onclick="toggleAutoShift()" id="autoShiftButton" class="productButton">Factor Shift Autobuyer: ON</button>
+      </div>
+      <div id="psubTab5">
+        <button class="productButton" style="color:lime" onclick="cpc()">Complete Product Challenge</button>
+        <button class="productButton" style="color:red" onclick="expc()">Exit Product Challenge</button>
+        <table style="margin-top:20px">
+        <tr>
+          <td><button style="margin-right: 10px;margin-bottom:10px" class="challenge productButton" onclick="epc(1)" id="pchal1">Product Challenge 1<br>Autoclickers are capped at 1<p></p>Goal: ee495 OP<br>Reward: <text id="prodChal1Reward">Square</text> the bought maximize and successor autobuyers.<br>Complete: <text id="prodChal1Comp">No.</text></button></td>
+        <td><button style="margin-right: 10px;margin-bottom:10px" class="challenge productButton" onclick="epc(2)" id="pchal2">Product Challenge 2<br>You can't buy factors<p></p>Goal: ee388 OP<br>Reward: All Factors are <text id="prodChal2Reward">doubled</text><br>Complete: <text id="prodChal2Comp">No.</text></button></td>
+        </tr>
+        <tr>
+        <td><button style="margin-right: 10px;margin-bottom:10px" class="challenge productButton" onclick="epc(3)" id="pchal3">Product Challenge 3<br>You can only choose 1 path<p></p>Goal: e5e706 OP<br>Reward: You can choose one more path for the second<text id="prodChal3Reward"></text> column<br>Complete: <text id="prodChal3Comp">No.</text></button></td>
+        <td><button style="margin-right: 10px;margin-bottom:10px" class="challenge productButton" onclick="epc(4)" id="pchal4">Product Challenge 4<br>You can't buy booster upgrades<p></p>Goal: ee1402 OP<br>Reward: Start runs with all booster upgrades<br>Complete: <text id="prodChal4Comp">No.</text></button></td>
+        </tr>
+        <tr>
+        <td><button style="margin-right: 10px;margin-bottom:10px" class="challenge productButton" onclick="epc(5)" id="pchal5">Product Challenge 5<br>Diagonalizers are square rooted, multiply booster gain by 0<p></p>Goal: e3.28e11 OP<br>Reward: Diagonalizers are another 10% more effective<br>Complete: <text id="prodChal5Comp">No.</text></button></td>
+        <td><button style="margin-right: 10px;margin-bottom:10px" class="challenge productButton" onclick="epc(6)" id="pchal6">Product Challenge 6<br>You can't buy product upgrades<p></p>Goal: e5e383 OP<br>Reward: Square product gain<br>Complete: <text id="prodChal6Comp">No.</text></button></td>
+        </tr>
+        <tr>
+        <td><button style="margin-right: 10px;margin-bottom:10px" class="challenge productButton" onclick="epc(7)" id="pchal7">Product Challenge 7<br>Challenge rewards 1 to 6 are nullified. This applies to challenge 8+ too<p></p>Goal: e3e859 OP<br>Reward: Multiply factors by the logarithm of products<br>Complete: <text id="prodChal7Comp">No.</text></button></td>
+        <td><button style="margin-right: 10px;margin-bottom:10px" class="challenge productButton" onclick="epc(8)" id="pchal8">Product Challenge 8<br>Diagonalizers scale linearly<p></p>Goal: e4.390e7 OP<br>Reward: You can choose all paths<br>Complete: <text id="prodChal8Comp">No.</text></button></td>
+        </tr>
+        <tr>
+        <td><button style="margin-right: 10px;margin-bottom:10px" class="challenge productButton" onclick="epc(9)" id="pchal9">Product Challenge 9<br>One-time Diagonalizer Upgrades are disabled, you need 1e25 products to enter<p></p>Goal: ee644 OP<br>Reward: Diagonalizer upgrades are buffed<br>Complete: <text id="prodChal9Comp">No.</text></button></td>
+        <td><button style="margin-right: 10px;margin-bottom:10px" class="challenge productButton" onclick="epc(10)" id="pchal10">Product Challenge 10<br>DP gain is serverely nerfed<p></p>Goal: ee16 OP<br>Reward: DP multiplier upgrade is buffed<br>Complete: <text id="prodChal10Comp">No.</text></button></td>
+        </tr>
+        <tr>
+        <td><button style="margin-right: 10px;margin-bottom:10px" class="challenge productButton" onclick="epc(11)" id="pchal11">Product Challenge 11<br>OP gain is serverely nerfed<p></p>Goal: e507200 OP<br>Reward: OP gain base is squared<br>Complete: <text id="prodChal11Comp">No.</text></button></td>
+        <td><button style="margin-right: 10px;margin-bottom:10px" class="challenge productButton" onclick="epc(12)" id="pchal12">Product Challenge 12<br>DP gain is serverely nerfed<p></p>Goal: ee16 OP<br>Reward: DP multiplier upgrade is buffed<br>Complete: <text id="prodChal12Comp">No.</text></button></td>
+        </tr>
+        </table>
       </div>
     </div>
     <div id="collapseScreen" style="display: none">
@@ -320,7 +351,7 @@
         <text id="dupCost3">Cost: 1 DP</text>
       </button>
       <button class="normalButton" id="dup4" onclick="dup(4)">
-        Each diagonalizer gives a +100% additive production boost<br>
+        Each diagonalizer gives a +100% <text id="dup4Effect">additive</text> production boost<br>
         <text id="dupCost4">Cost: 1 DP</text>
       </button><br>
             <button class="normalButton" id="dup5" onclick="dup(5)">
@@ -332,16 +363,16 @@
         <text id="dupCost6">Cost: 1 DP</text>
       </button>
       <button class="normalButton" id="dup7" onclick="dup(7)">
-        Diagonalizers are twice as effective<br>
+        Diagonalizers are <text id="dup7Effect">twice</text> as effective<br>
         <text id="dupCost7">Cost: 1 DP</text>
       </button>
       <button class="normalButton" id="dup8" onclick="dup(8)">
-        Factors 1 to 4 multiply Factor 5<br>
+        Factors 1 to 4 multiply Factor 5+ <text id="dup8Effect">at squared rate</text><br>
         <text id="dupCost8">Cost: 1 DP</text>
       </button>
       <br>
       <button class="normalButton" id="dup9" onclick="dup(9)">
-        Multiply DP gain by 2<br>
+        Multiply DP gain by <text id="dup9Effect">2</text><br>
         <text id="dupCost9">Cost: 1 DP</text>
       </button>
         <button class="normalButton" onclick="maxDup()">
