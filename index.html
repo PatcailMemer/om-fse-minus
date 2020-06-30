@@ -25,6 +25,7 @@
     <button onclick="Tab(8)" id="diagonalizeTabButton" class="diagonalizeTabButton">Diagonalize</button><text class="invisible">0</text>
     <button onclick="Tab(6)" id="boosterTabButton" class="boosterTabButton">Boosters</button><text class="invisible">0</text>
     <button onclick="Tab(7)" id="productTabButton" class="productTabButton">Products</button><text class="invisible">0</text>
+    <button onclick="" id="factorizeTabButton" class="factorizeTabButton invisible">Factorize</button><text class="invisible">0</text>
     <p></p>
     <div id="Tab1">
       <button onclick="increment(1)" class="normalButton">Increase Ordinal by 1</button>
@@ -228,7 +229,7 @@
       <button onclick="psubTab(1)" class="productButton">Information</button>
       <button onclick="psubTab(2)" class="productButton">Upgrades</button>
       <button onclick="psubTab(3)" class="productButton">Omega Factors</button>
-      <button onclick="psubTab(4)" class="productButton">Autoprestigers</button>
+      <button onclick="psubTab(4)" class="productButton">Tier 3 automation</button>
       <button onclick="psubTab(5)" class="productButton">Product Challenges</button>
       <div id="psubTab1">
         <br>
@@ -273,9 +274,9 @@
             <td>Meta Upgrades</td>
             <td><button class="treeButton plocked" id="pup16" onclick="pup(16)"><font>Gain 1% of OP gained on Infinity per second</font><br><br>Need 1 Product</button></td>
             <td><button class="treeButton plocked" id="pup17" onclick="pup(17)">Gain 1 free autoclicker each and 1% of DP gained per second<br>Need 3 Products</button></td>
-            <td><button class="treeButton plocked" id="pup18" onclick="pup(18)">Unlock Factor Shift Autobuyer<br><br>Need 9 Products</button></td>
+            <td><button class="treeButton plocked" id="pup18" onclick="pup(18)" style="font-size:12pt">Unlock Factor Shift Autobuyer that also buys Diagonalizer Upgrades<br>Need 9 Products</button></td>
             <td><button class="treeButton plocked" id="pup19" onclick="pup(19)">Unlock Product Challenges<br><br>Need 100 Products</button></td>
-            <td><button class="treeButton plocked" id="pup20" onclick="pup(20)">Unlock the next layer<br><br>Need eee6 OP</button></td>
+            <td><button class="treeButton plocked" id="pup20" onclick="pup(20)">Unlock the next layer<br><br>Need 1.000e6 Diagonalizers</button></td>
           </tr>
           </tbody></table>
           <p style="text-align: center"><i>You may have to rotate your phone on mobile to see all of the upgrades. The bottom row of upgrades doesn't consume your products.</i></p>
@@ -296,8 +297,9 @@
         <button onclick="toggleAutoShift()" id="autoShiftButton" class="productButton">Factor Shift Autobuyer: ON</button>
       </div>
       <div id="psubTab5">
-        <button class="productButton" style="color:lime" onclick="cpc()">Complete Product Challenge</button>
+        <button class="productButton" style="color:lime;display:none" onclick="cpc()">Complete Product Challenge</button>
         <button class="productButton" style="color:red" onclick="expc()">Exit Product Challenge</button>
+        <p id="prodChalIn"></p>
         <table style="margin-top:20px">
         <tr>
           <td><button style="margin-right: 10px;margin-bottom:10px" class="challenge productButton" onclick="epc(1)" id="pchal1">Product Challenge 1<br>Autoclickers are capped at 1<p></p>Goal: ee495 OP<br>Reward: <text id="prodChal1Reward">Square</text> the bought maximize and successor autobuyers.<br>Complete: <text id="prodChal1Comp">No.</text></button></td>
@@ -321,7 +323,7 @@
         </tr>
         <tr>
         <td><button style="margin-right: 10px;margin-bottom:10px" class="challenge productButton" onclick="epc(11)" id="pchal11">Product Challenge 11<br>OP gain is serverely nerfed<p></p>Goal: e507200 OP<br>Reward: OP gain base is squared<br>Complete: <text id="prodChal11Comp">No.</text></button></td>
-        <td><button style="margin-right: 10px;margin-bottom:10px" class="challenge productButton" onclick="epc(12)" id="pchal12">Product Challenge 12<br>DP gain is serverely nerfed<p></p>Goal: ee16 OP<br>Reward: DP multiplier upgrade is buffed<br>Complete: <text id="prodChal12Comp">No.</text></button></td>
+        <td><button style="margin-right: 10px;margin-bottom:10px" class="challenge productButton" onclick="epc(12)" id="pchal12">Product Challenge 12<br>Diagonalizers are useless<p></p>Goal: e5.6e9 OP<br>Reward: DP multiplier upgrade is buffed, each diagonalizer raises the OP base to the 1.000001<br>Complete: <text id="prodChal12Comp">No.</text></button></td>
         </tr>
         </table>
       </div>
@@ -376,7 +378,7 @@
         <text id="dupCost9">Cost: 1 DP</text>
       </button>
         <button class="normalButton" onclick="maxDup()">
-        Max all repeatable Diagonalize Upgrades<br>You finger will thank me later
+        Max all Diagonalize Upgrades except for the extra autoclickers<br>You finger will thank me later
       </button>
       <br>
       <!--- <input type="checkbox" onclick="autoDiagonalize()"> Enable Auto-Diagonalizer. --->
