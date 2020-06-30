@@ -32,7 +32,7 @@ const iupCosts=[10**5,10**3,10**9,10**17,2e22,4e23,10**19,2e25,4e27]
 let ordColor = "no" //yes
 let EN = ExpantaNum
 let factor1to4=EN(1)
-const prodChalGoals=[EN("ee495"),EN("ee388"),EN("e5e706"),EN("ee1402"),EN("e3.28e11"),EN("e5e383"),EN("e3e859"),EN("e4.390e7"),EN("ee644"),EN("ee16"),EN("e507200"),EN("eeeeee16")]
+const prodChalGoals=[EN("ee495"),EN("ee388"),EN("e5e706"),EN("ee1402"),EN("e3.28e11"),EN("e5e383"),EN("e3e859"),EN("e4.390e7"),EN("ee644"),EN("ee16"),EN("e507200"),EN("e5.6e9")]
 const musicLink=[
 "https://cdn.glitch.com/03a4b67b-6f18-4f6d-8d37-50a18fb615c8%2FGoing%20Down%20by%20Jake%20Chudnow%20%5BHD%5D.mp3?v=1581538237884",
 "https://cdn.glitch.com/03a4b67b-6f18-4f6d-8d37-50a18fb615c8%2FHypnothis.mp3?v=1584285594822"
@@ -110,6 +110,8 @@ function loop(ms) {
   if (typeof game.leastBoost=="undefined") game.leastBoost=Infinity
   game.collapseTime += ms/1000
   game.base=100
+  if (isNaN(game.autoOn.shift)) game.autoOn.shift=0
+
 
   if (game.upgrades.includes(14)&&game.upgrades.includes(15)) game.OP=game.OP.add(calcTotalOPGain().mul(ms/100000))
   if (game.upgrades.includes(15)||game.pupgrades.includes(17)) game.DP=game.DP.add(getDPgain().mul(ms/100000))
@@ -176,6 +178,7 @@ function loop(ms) {
 
   if (buptotalMute <= 100000000 && game.iups[3]==1) buptotalMute=Math.min(100000000,buptotalMute*getManifoldEffect()**2)
   // i'm pretty sure bupTotalMute just deals with tier 2 automation
+  
 
   if (EN.mul(totalSuccAuto,totalMult).gte(0)) {
     game.autoLoop.succ += ms
@@ -274,7 +277,7 @@ function loop(ms) {
       factorShift()
     }
   }
-
+cpc()
   }
   if (game.upgrades.includes(11)) { // replaced
     partOP += ms*(game.upgrades.includes(3)?5**(game.challenge==1 || game.challenge==7?4:1):1)/50*game.assCard[2].mult.toNumber()
@@ -382,16 +385,16 @@ function render() {
   document.getElementById("factorMult").innerHTML = "Your factors are multiplying Tier 1 Automation by " + beautify(factorMult, game.omegaFactorCount > 0 ? 2 : 0)
   document.getElementById("omegaFactorMult").innerHTML = "Your Omega Factors are multiplying all regular factors and diagonalizers by " + beautify(omegaFactorMult, 2)
   document.getElementById("boostersText").innerHTML = "You have " + game.boosters + " boosters";
-  document.getElementById("productsText").innerHTML = "You have " + game.products + " products";
-  document.getElementById("refundBoosters").innerHTML = "Refund back " + calcRefund() + " boosters, but reset this factor shift"
+  document.getElementById("productsText").innerHTML = "You have " + beautifyEN(game.products) + " products";
+  document.getElementById("refundBoosters").innerHTML = (game.prodChalComp.includes(4)?"Refunding is disabled because you completed Product Challenge 4":"Refund back " + calcRefund() + " boosters, but reset this factor shift")
   document.getElementById("factorShiftButton").innerHTML = "Do a Factor Shift for " + Math.round(game.factorShifts / 8) + " Boosters"
   document.getElementById("dynamicMult").innerHTML = "Your Dynamic Multiplier is x" + ((game.dynamic*getManifoldEffect())**(game.upgrades.includes(13) && game.challenge % 2 == 1?2:1)).toFixed(3)
   document.getElementById("maxAllAuto").innerHTML = "Your Max All Autobuyer is clicking the Max All button " + (game.upgrades.includes(11) && game.autoOn.max==1 ? beautify(buptotalMute) : 0) + " times per second, but only if you can't Factor Shift" // replaced
   document.getElementById("infinityAuto").innerHTML = "Your Infinity Autobuyer is clicking the Infinity button " + (false && game.autoOn.inf==1 ? beautify(buptotalMute) : 0) + " times per second, but actually not because it doesn't exist" // replaced
-  document.getElementById("factorShiftAuto").innerHTML = "Your Factor Shift Autobuyer is buying max Factor Shifts " + (game.pupgrades.includes(18) && game.autoOn.shift == 1 ? 10 : 0) + " times per second"
+  document.getElementById("factorShiftAuto").innerHTML = "Your Factor Shift / Diagonalizer Upgrades Autobuyer is activating " + (game.pupgrades.includes(18) && game.autoOn.shift == 1 ? 10 : 0) + " times per second"
   document.getElementById("autoMaxButton").innerHTML = "Max All Autobuyer: " + (game.upgrades.includes(11) ? (game.autoOn.max==1 ? "ON" : "OFF") : "LOCKED") // replaced
   document.getElementById("autoInfButton").innerHTML = "Infinity Autobuyer: " + (false ? (game.autoOn.inf==1 ? "ON" : "OFF") : "LOCKED") // replaced
-  document.getElementById("autoShiftButton").innerHTML = "Max All Autobuyer: " + (game.pupgrades.includes(18) ? (game.autoOn.shift==1 ? "ON" : "OFF") : "LOCKED")
+  document.getElementById("autoShiftButton").innerHTML = "Factor Shift/Diagonalizer Upgrades Autobuyer: " + (game.pupgrades.includes(18) ? (game.autoOn.shift==1 ? "ON" : "OFF") : "LOCKED")
   document.getElementById("bup6 current").innerHTML = (10+game.boosters**0.9).toFixed(2)
   document.getElementById("runChal").innerHTML = (game.chal8==1?"You're currently running Challenge 8":(game.challenge==0?"You're currently not in a challenge":"You're currently running Challenge "+game.challenge))
   document.getElementById("incrementyText").innerHTML = "You have "+beautify(game.incrementy)+" incrementy, multiplying " + (game.iups[8]==1?"Tier 1 and ":"") + "Tier 2 Automation by "+((Math.log10(10+game.incrementy.toNumber())**(1.05**game.iups[0]))*1.2**game.iups[2]).toFixed(3) + "x"
@@ -462,14 +465,15 @@ function render() {
     }
     get("dupCost"+j).textContent=(k.isInfinite()?"Bought":"Cost: " + beautify(k) + " DP")
   }
-  get("currentDiagonalizerBase").textContent=getOPBase()
+  get("currentDiagonalizerBase").textContent=beautify(getOPBase())
   for (let i=1;i<12.5;i++) {
     get("prodChal" + i + "Comp").textContent=(game.prodChalComp.includes(i)?"Yes":"No")
   }
   get("dup4Effect").textContent=(game.prodChalComp.includes(9)?"multiplicative":"additive")
   get("dup7Effect").textContent=(game.prodChalComp.includes(9)?"thrice":"twice")
   get("dup8Effect").textContent=(game.prodChalComp.includes(9)?"at squared rate":"")
-  get("dup9Effect").textContent=(game.prodChalComp.includes(10)?"3":"2")
+  get("dup9Effect").textContent=(game.prodChalComp.includes(10)?(game.prodChalComp.includes(12)?"4":"3"):(game.prodChalComp.includes(10)?"3":"2"))
+  get("prodChalIn").innerHTML=(game.prodChal!=0?"You're currently in Product challenge " + game.prodChal:"You're not in a product challenge") + "<br>They autocomplete when you reach the goal"
 }
 
 function epc(x) {
@@ -538,7 +542,9 @@ function getOPBase() {
   } else {
     base=EN(500).times(EN(1.1).pow(diag.minus(8)))
   }
+  if (game.prodChal==12) base=EN(100) //aaaaaaaaaaaaaa
   if (game.prodChalComp.includes(11)) base=base.pow(2)
+  if (game.prodChalComp.includes(12)&&game.prodChal!=12) base=base.pow(EN(1.000001).pow(getDiagonalizers()))
   return base.floor()
 }
 
@@ -549,7 +555,7 @@ function getDiagonalizers() {
 function getDPgain() {
   let gain=game.ord.div(game.base**2).sqrt().times(Math.min(1,(game.diagonalTime/10)**2))
   if (game.prodChal==10) gain=gain.add(1).log10()
-  gain=gain.times(EN(2+game.prodChalComp.includes(10)).pow(game.diagonalUp[8].isNaN()?0:game.diagonalUp[8]))
+  gain=gain.times(EN(2+game.prodChalComp.includes(10)+game.prodChalComp.includes(12)).pow(game.diagonalUp[8].isNaN()?0:game.diagonalUp[8]))
   return gain.floor()
 }
 
@@ -888,6 +894,7 @@ function factorBoost() {
 }
 
 function refund() {
+  if (!game.prodChalComp.includes(4)) {
   game.boosters += calcRefund()
   let rightrow = []
   if (game.upgrades.includes(4)) rightrow.push(4)
@@ -925,6 +932,7 @@ function refund() {
 
   updateFactors();
   factorMult = EN(1);
+}
 }
 
 function getManifolds() {
@@ -1034,7 +1042,7 @@ function pup(x,spectate=0) {
   document.getElementById("pup" + (x)).classList.remove("bought")
   document.getElementById("pup" + (x)).classList.add("locked")
   if (!game.pupgrades.includes(x)) {
-    if (game.products.toNumber() >= pupUpgradeCosts[x-1] && pathAllows(x) && !(x==20&&game.OP.lt("eee6"))) {
+    if (game.products.toNumber() >= pupUpgradeCosts[x-1] && pathAllows(x) && !(x==20&&game.diagonalUp[0].lt(1000000))) {
       if (x % 5 == 1 || game.pupgrades.includes(x-1)) {
         if (spectate==0) {
           if (x==20)
@@ -1310,9 +1318,9 @@ function beautifyEN(n,f=0) {
   } else if (x.lte(EN.tetrate(10, 6))){
     let exponent = x.log10().floor()
     let mantissa = ""
-    if (x.lte(EN.E_MAX_SAFE_INTEGER))
+    if (x.lte(EN(10).pow(1000000)))
     {
-      mantissa = x.divide(EN(10).pow(exponent)).toNumber().toFixed(3)
+      mantissa = x.divide(EN(10).pow(exponent)).toNumber().toFixed(5)
     }
     else
     {
