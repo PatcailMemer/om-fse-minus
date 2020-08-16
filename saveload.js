@@ -1,6 +1,6 @@
 function reset() {
   game={
-  base: 10,
+  base: 100,
   ord: ENify(0),
   over: 0,
   canInf: false,
@@ -19,11 +19,12 @@ function reset() {
   omegaFactors: [],
   omegaFactorCount: 0,
   lastTick: Date.now(),
-  version: 0.22,
+  version: 1,
   boostUnlock: 0,
   boosters: 0,
   upgrades: [],
   pupgrades: [],
+  fupgrades: [],
   products: EN(0),
   factorBoosts: 0,
   dynamic: 1,
@@ -65,7 +66,20 @@ function reset() {
   prodChal: 0,
   prodChalComp: [],
   prodChal8: 0,
-  prodChal8Comp: 0
+  prodChal8Comp: 0,
+  factorizeUnlock: 0,
+  factorials: EN(0),
+  omegaFactorize: [0,0,0,0,0],
+  timeInFactorize: 0,
+  fsubTab: 1,
+  incrementer: [
+    [{prod: EN(1),bought: EN(0)},{prod: EN(1),bought: EN(0)},{prod: EN(1),bought: EN(0)},{prod: EN(1),bought: EN(0)}],
+    [{prod: EN(1),bought: EN(0)},{prod: EN(1),bought: EN(0)},{prod: EN(1),bought: EN(0)},{prod: EN(1),bought: EN(0)}],
+    [{prod: EN(1),bought: EN(0)},{prod: EN(1),bought: EN(0)},{prod: EN(1),bought: EN(0)},{prod: EN(1),bought: EN(0)}],
+    [{prod: EN(1),bought: EN(0)},{prod: EN(1),bought: EN(0)},{prod: EN(1),bought: EN(0)},{prod: EN(1),bought: EN(0)}]
+    ],
+  mostFactorizedOnce: EN(0),
+  inNuke: 0
   }
   document.getElementById("infinityTabButton").style.display="none"
   render()
@@ -89,6 +103,12 @@ function loadGame(loadgame) {
   for (let i in game.diagonalUp) {
     game.diagonalUp[i]=ENify(game.diagonalUp[i])
   }
+  for (const a in game.incrementer) {
+    for (const b in game.incrementer[a]) {
+      game.incrementer[a][b].prod=ENify(game.incrementer[a][b].prod)
+      game.incrementer[a][b].bought=ENify(game.incrementer[a][b].bought)
+    }
+  }
   game.products=ENify(game.products)
   const diff = Date.now() - game.lastTick;
   // Console.log(diff);
@@ -97,13 +117,8 @@ function loadGame(loadgame) {
   if (game.leastBoost === null) game.leastBoost = Infinity;
   // Console.log(game.leastBoost);
   render();
-  if (game.offlineProg === 1) {
-    if (game.collapseTime <= 1000 && diff / 1000 >= 1000 - game.collapseTime) {
-      loop((1000 - game.collapseTime) * 1000, 1);
-      loop(diff - ((1000 - game.collapseTime) * 1000), 1);
-    } else {
-      loop(diff, 1);
-    }
+  if (false) {
+    loop(diff, 1);
   }
   game.lastTick = Date.now();
   // Console.log(diff);
@@ -111,10 +126,6 @@ function loadGame(loadgame) {
 
 function load() {
   let loadgame = JSON.parse(localStorage.getItem("om-fse-save")); //ordinalMarkupSave
-  if (loadgame == null) {
-    loadgame = JSON.parse(localStorage.getItem("ordinalMarkupSave"))
-    if (typeof loadgame.ord!="object") loadgame=JSON.parse(localStorage.getItem("om-fse-save"))
-  }
   if (loadgame !== null && AF === 0) {
     loadGame(loadgame);
   }
@@ -229,9 +240,23 @@ function handleOldVersions(loadgame) {
   handleVeryOldSaves(loadgame);
   handlePost0202Saves();
   handlePost0211Saves();
+  handlePreV1();
 }
 
-
+function handlePreV1() {
+  if (game.version <= 0.31) {
+    if (game.OP.gte("eee8")) {
+      reset()
+      alert("The game updated and your save had to be wiped. Here's 10 products in compensation")
+      game.infUnlock=1
+      game.diagonalizeUnlock=1
+      game.boostUnlock=1
+      factorCollapse()
+      game.products=EN(10)
+    }
+    game.version = 1
+  }
+}
 
 
 function save() {

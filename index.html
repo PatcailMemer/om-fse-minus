@@ -12,6 +12,8 @@
     <script src="ExpantaNum.js" defer></script>
     <script src="saveload.js" defer></script>
     <script src="hotkeys.js" defer></script>
+    <script src="function.js" defer></script>
+    <script src="incrementer.js" defer></script>
     <script src="script.js" defer></script>
   </head>  
   <body>
@@ -25,6 +27,7 @@
     <button onclick="Tab(8)" id="diagonalizeTabButton" class="diagonalizeTabButton">Diagonalize</button><text class="invisible">0</text>
     <button onclick="Tab(6)" id="boosterTabButton" class="boosterTabButton">Boosters</button><text class="invisible">0</text>
     <button onclick="Tab(7)" id="productTabButton" class="productTabButton">Products</button><text class="invisible">0</text>
+    <button onclick="Tab(9)" id="factorizeTabButton" class="factorizeTabButton">Factorize</button><text class="invisible">0</text>
     <p></p>
     <div id="Tab1">
       <button onclick="increment(1)" class="normalButton">Increase Ordinal by 1</button>
@@ -228,7 +231,7 @@
       <button onclick="psubTab(1)" class="productButton">Information</button>
       <button onclick="psubTab(2)" class="productButton">Upgrades</button>
       <button onclick="psubTab(3)" class="productButton">Omega Factors</button>
-      <button onclick="psubTab(4)" class="productButton">Autoprestigers</button>
+      <button onclick="psubTab(4)" class="productButton">Tier 3 automation</button>
       <button onclick="psubTab(5)" class="productButton">Product Challenges</button>
       <div id="psubTab1">
         <br>
@@ -273,9 +276,9 @@
             <td>Meta Upgrades</td>
             <td><button class="treeButton plocked" id="pup16" onclick="pup(16)"><font>Gain 1% of OP gained on Infinity per second</font><br><br>Need 1 Product</button></td>
             <td><button class="treeButton plocked" id="pup17" onclick="pup(17)">Gain 1 free autoclicker each and 1% of DP gained per second<br>Need 3 Products</button></td>
-            <td><button class="treeButton plocked" id="pup18" onclick="pup(18)">Unlock Factor Shift Autobuyer<br><br>Need 9 Products</button></td>
+            <td><button class="treeButton plocked" id="pup18" onclick="pup(18)" style="font-size:12pt">Unlock Factor Shift Autobuyer that also buys Diagonalizer Upgrades<br>Need 9 Products</button></td>
             <td><button class="treeButton plocked" id="pup19" onclick="pup(19)">Unlock Product Challenges<br><br>Need 100 Products</button></td>
-            <td><button class="treeButton plocked" id="pup20" onclick="pup(20)">Unlock the next layer<br><br>Need eee6 OP</button></td>
+            <td><button class="treeButton plocked" id="pup20" onclick="pup(20)">Unlock the next layer<br><br>Need 1,000,000 Diagonalizers</button></td>
           </tr>
           </tbody></table>
           <p style="text-align: center"><i>You may have to rotate your phone on mobile to see all of the upgrades. The bottom row of upgrades doesn't consume your products.</i></p>
@@ -296,8 +299,9 @@
         <button onclick="toggleAutoShift()" id="autoShiftButton" class="productButton">Factor Shift Autobuyer: ON</button>
       </div>
       <div id="psubTab5">
-        <button class="productButton" style="color:lime" onclick="cpc()">Complete Product Challenge</button>
-        <button class="productButton" style="color:red" onclick="expc()">Exit Product Challenge</button>
+        <button class="productButton" style="color:lime;display:none" onclick="cpc()">Complete Product Challenge</button>
+        <button class="productButton" style="color:red" onclick="expc();game.inNuke=0">Exit Product Challenge</button>
+        <p id="prodChalIn"></p>
         <table style="margin-top:20px">
         <tr>
           <td><button style="margin-right: 10px;margin-bottom:10px" class="challenge productButton" onclick="epc(1)" id="pchal1">Product Challenge 1<br>Autoclickers are capped at 1<p></p>Goal: ee495 OP<br>Reward: <text id="prodChal1Reward">Square</text> the bought maximize and successor autobuyers.<br>Complete: <text id="prodChal1Comp">No.</text></button></td>
@@ -312,7 +316,7 @@
         <td><button style="margin-right: 10px;margin-bottom:10px" class="challenge productButton" onclick="epc(6)" id="pchal6">Product Challenge 6<br>You can't buy product upgrades<p></p>Goal: e5e383 OP<br>Reward: Square product gain<br>Complete: <text id="prodChal6Comp">No.</text></button></td>
         </tr>
         <tr>
-        <td><button style="margin-right: 10px;margin-bottom:10px" class="challenge productButton" onclick="epc(7)" id="pchal7">Product Challenge 7<br>Challenge rewards 1 to 6 are nullified. This applies to challenge 8+ too<p></p>Goal: e3e859 OP<br>Reward: Multiply factors by the logarithm of products<br>Complete: <text id="prodChal7Comp">No.</text></button></td>
+        <td><button style="margin-right: 10px;margin-bottom:10px" class="challenge productButton" onclick="epc(7)" id="pchal7">Product Challenge 7<br>Challenge rewards 1 to 6 are nullified. This applies to challenge 8+ too<p></p>Goal: e3e859 OP<br>Reward: Multiply factors by the logarithm of products (caps at 1e20 Products)<br>Complete: <text id="prodChal7Comp">No.</text></button></td>
         <td><button style="margin-right: 10px;margin-bottom:10px" class="challenge productButton" onclick="epc(8)" id="pchal8">Product Challenge 8<br>Diagonalizers scale linearly<p></p>Goal: e4.390e7 OP<br>Reward: You can choose all paths<br>Complete: <text id="prodChal8Comp">No.</text></button></td>
         </tr>
         <tr>
@@ -321,7 +325,7 @@
         </tr>
         <tr>
         <td><button style="margin-right: 10px;margin-bottom:10px" class="challenge productButton" onclick="epc(11)" id="pchal11">Product Challenge 11<br>OP gain is serverely nerfed<p></p>Goal: e507200 OP<br>Reward: OP gain base is squared<br>Complete: <text id="prodChal11Comp">No.</text></button></td>
-        <td><button style="margin-right: 10px;margin-bottom:10px" class="challenge productButton" onclick="epc(12)" id="pchal12">Product Challenge 12<br>DP gain is serverely nerfed<p></p>Goal: ee16 OP<br>Reward: DP multiplier upgrade is buffed<br>Complete: <text id="prodChal12Comp">No.</text></button></td>
+        <td><button style="margin-right: 10px;margin-bottom:10px" class="challenge productButton" onclick="epc(12)" id="pchal12">Product Challenge 12<br>Diagonalizers are useless<p></p>Goal: e5.6e9 OP<br>Reward: DP multiplier upgrade is buffed, each diagonalizer raises the OP base to the 1.000001<br>Complete: <text id="prodChal12Comp">No.</text></button></td>
         </tr>
         </table>
       </div>
@@ -376,11 +380,95 @@
         <text id="dupCost9">Cost: 1 DP</text>
       </button>
         <button class="normalButton" onclick="maxDup()">
-        Max all repeatable Diagonalize Upgrades<br>You finger will thank me later
+        Max all Diagonalize Upgrades except for the extra autoclickers<br>You finger will thank me later
       </button>
       <br>
       <!--- <input type="checkbox" onclick="autoDiagonalize()"> Enable Auto-Diagonalizer. --->
     </div>
         </div>
+  <div id="Tab9">
+    <button class="collapse" onclick="fsubTab(1)">Factorize Upgrades</button>
+    <button class="collapse" onclick="fsubTab(3)">Factorize Milestones</button>
+    <button class="collapse" onclick="fsubTab(2)">Incrementers</button>
+    <div id="fsubTab1">
+    <b id="factorialText" style="margin:10px;text-align: center;font-size: 20pt;display: inline-block;width:100%">You have 1 Factorials</b>
+    <button id="performFactorize" style="display:block;margin:auto" class="factorize" onclick="(game.diagonalUp[0].gte(1000000)?factorize():0)">Reach 1,000,000 Diagonalizers to Factorize</button>
+    <table class="trueCenter long" style="width: 1010px"><tbody class="trueCenter long">
+        <tr>
+          <td><button class="treeButton locked" id="fup1" onclick="fup(1)">Pernamently keep Omega Factors and they boost Factors<br>1 Factorial</button></td>
+          <td><button class="treeButton locked" id="fup2" onclick="fup(2)">Pernamently keep Product Challenge 4 and double products<br>1 Factorial</button></td>
+          <td><button class="treeButton locked" id="fup3" onclick="fup(3)">Factors 1-50 multiply Factors 51+<br><br>2 Factorials</button></td>
+          <td><button class="treeButton locked" id="fup4" onclick="fup(4)">Keep 3 Factor Path upgrades and Product Challenge 9<br>4 Factorials</button></td>
+          <td><button class="treeButton locked" id="fup5" onclick="fup(5)">Unlock Incrementers<br><br>Need 6 Factorials</button></td>
+        </tr>
+        <tr>
+          <td><button class="treeButton locked" id="fup6" onclick="fup(6)">Square Factorial Gain (Good past 1.6e6 diagonalizers)<br>5 Factorials</button></td>
+          <td><button class="treeButton locked" id="fup7" onclick="fup(7)">Diagonalizers scale 1.2x slower tetrationally<br>100 Factorials</button></td>
+          <td><button class="treeButton locked" id="fup8" onclick="fup(8)">Bought Incrementers are squared<br><br>500 Factorials</button></td>
+          <td><button class="treeButton locked" id="fup9" onclick="fup(9)">Factorials boost Incrementers by log(10+x)<br>2500 Factorials</button></td>
+          <td><button class="treeButton locked" id="fup10" onclick="fup(10)">Unlock Factorize Challenges <br>(coming soon!)<br>Need 1e4 Factorials</button></td>
+        </tr>
+        <tr>
+          <td><button class="treeButton locked" id="fup11" onclick="fup(9)">???<br>???</button></td>
+          <td><button class="treeButton locked" id="fup12" onclick="fup(10)">???<br>???</button></td>
+          <td><button class="treeButton locked" id="fup13" onclick="fup(11)">???<br>???</button></td>
+          <td><button class="treeButton locked" id="fup14" onclick="fup(12)">???<br>???</button></td>
+          <td><button class="treeButton locked" id="fup15" onclick="fup(12)">???<br>???</button></td>
+        </tr>
+        <tr>
+          <td><button class="treeButton locked" id="fup16" onclick="fup(13)">???<br>???</button></td>
+          <td><button class="treeButton locked" id="fup17" onclick="fup(14)">???<br>???</button></td>
+          <td><button class="treeButton locked" id="fup18" onclick="fup(15)">???<br>???</button></td>
+          <td><button class="treeButton locked" id="fup19" onclick="fup(16)">???<br>???<</button></td>
+          <td><button class="treeButton locked" id="fup20" onclick="fup(20)">???<br>???<</button></td>
+        </tr>
+        </tbody></table>
+    </div>
+    <div id="fsubTab2">
+      <b id="factorialText2" style="margin:10px;text-align: center;font-size: 20pt;display: inline-block;width:100%">You have 1 Factorials</b>
+      <table class="trueCenter long" id="incrementerTable"><tbody class="trueCenter long">
+        <tr>
+          <td id="inc11">x295<br>OP gain base per diagonalizer</td>
+          <td id="inc21">x592<br>Production per Factor 100</td>
+          <td id="inc31">x1384<br>multiplier to Product gain</td>
+          <td id="inc41">+671<br>Effective Factors</td>
+        </tr>
+        <tr>
+          <td><button class="locked" id="inc12" onclick="inc(1,2)">Diagonalizer Incrementer I<br>1 x 0<br>0 above/sec<br>5 Factorials</button></td>
+          <td><button class="locked" id="inc22" onclick="inc(2,2)">Multiplier Incrementer I<br>1 x 0<br>0 above/sec<br>5 Factorials</button></td>
+          <td><button class="locked" id="inc32" onclick="inc(3,2)">Product Incrementer I<br>1 x 0<br>0 above/sec<br>5 Factorials</button></td>
+          <td><button class="locked" id="inc42" onclick="inc(4,2)">Factor Incrementer I<br>1 x 0<br>0 above/sec<br>5 Factorials</button></td>
+        </tr>
+        <tr>
+          <td><button class="locked" id="inc13" onclick="inc(1,3)">Diagonalizer Incrementer II<br>1 x 0<br>0 above/sec<br>5 Factorials</button></td>
+          <td><button class="locked" id="inc23" onclick="inc(2,3)">Multiplier Incrementer II<br>1 x 0<br>0 above/sec<br>5 Factorials</button></td>
+          <td><button class="locked" id="inc33" onclick="inc(3,3)">Product Incrementer II<br>1 x 0<br>0 above/sec<br>5 Factorials</button></td>
+          <td><button class="locked" id="inc43" onclick="inc(4,3)">Factor Incrementer II<br>1 x 0<br>0 above/sec<br>5 Factorials</button></td>
+        </tr>
+        <tr>
+          <td><button class="locked" id="inc14" onclick="inc(1,4)">Diagonalizer Incrementer III<br>1 x 0<br>0 above/sec<br>5 Factorials</button></td>
+          <td><button class="locked" id="inc24" onclick="inc(2,4)">Multiplier Incrementer III<br>1 x 0<br>0 above/sec<br>5 Factorials</button></td>
+          <td><button class="locked" id="inc34" onclick="inc(3,4)">Product Incrementer III<br>1 x 0<br>0 above/sec<br>5 Factorials</button></td>
+          <td><button class="locked" id="inc44" onclick="inc(4,4)">Factor Incrementer III<br>1 x 0<br>0 above/sec<br>5 Factorials</button></td>
+        </tr>
+        </tbody></table>
+      <p style="text-align: center">Thanks to your upgrades, Incrementers are <text id="incSpeed">7.52</text>x faster<br>Get this number to 7.77 to generate 0.05 passive factorials per second, up to 60 factorials<br>Get this number to 10.00 to have Omega Factors boost Factorial gain!</p>
+    </div>
+    <div id="fsubTab3">
+      <h1 style="text-align: center">Factorize Milestones</h1>
+        <h4 style="font-weight:normal;text-align: center">Factorize for enough factorials at once to get rewards!<br></h4>
+      <table id="factMile" style="width: auto;display: block" class="long trueCenter">
+          <tbody class="long trueCenter">
+          <tr class="trueCenter long">
+            <td id="fact0"><br>1 Factorial<br><p>You can buy Omega Factors with Factorials</p></td>
+            <td id="fact1"><br>2 Factorials<br><p>Incrementers are 5x faster and get affected by Omega Factors</p></td>
+            <td id="fact2"><br>6 Factorials<br><p>You try to autocomplete challenges and autobuy product upgrades</p></td>
+            <td id="fact3"><br>24 Factorials<br><p>Gain 1% of pending products/factorials per second. Caps at 1000 for factorials</p></td>
+            <td id="fact4"><br>120 Factorials<br><p>Omega Factors boosts the previous Factorize milestone (gain and cap)</p></td>
+          </tr>
+          </tbody>
+        </table>
+    </div>
+  </div>
   </body>
 </html>
