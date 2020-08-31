@@ -175,7 +175,7 @@ function loop(ms) {
   if (game.dynamic>=10) game.dynamic = 10
   if (game.dynamic<0) game.dynamic = 0
   if (game.fupgrades.includes(2)&&!game.prodChalComp.includes(4)) game.prodChalComp.push(4)
-  if (game.fupgrades.includes(2)&&!game.prodChalComp.includes(9)) game.prodChalComp.push(9)
+  if (game.fupgrades.includes(4)&&!game.prodChalComp.includes(9)) game.prodChalComp.push(9)
   if (game.fupgrades.includes(4)&&!game.pupgrades.includes(1)) game.pupgrades.push(1)
   if (game.fupgrades.includes(4)&&!game.pupgrades.includes(2)) game.pupgrades.push(2)
   if (game.fupgrades.includes(4)&&!game.pupgrades.includes(3)) game.pupgrades.push(3)
